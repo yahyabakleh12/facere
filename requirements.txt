@@ -1,0 +1,8 @@
+face_recognition
+asyncio
+websockets
+requests
+pickle-compat
+numpy
+openapi-codec
+deepface

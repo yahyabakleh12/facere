@@ -6,14 +6,14 @@ import requests
 import pickle
 import numpy as np
 import codecs
-from deepface import DeepFace
+# from deepface import DeepFace
 #######################################my code###########################################################
 userList = []
 encodListknown = []
 userPath=[]
 userid = []
 def sync():
-    x = requests.get('https://1861-94-200-29-94.ngrok-free.app/get_faces')
+    x = requests.get('https://e9ed-94-200-29-94.ngrok-free.app/get_faces')
     x.raise_for_status()
     # access JSOn content
     jsonResponse = x.json()
@@ -85,6 +85,6 @@ def recognize_face(message):
 if __name__ == '__main__':
     loop = asyncio.get_event_loop()
     loop.run_until_complete(
-        websockets.serve(websocket_handler, "192.168.1.48", 8765)
+        websockets.serve(websocket_handler, "3.254.51.228", 8765)
     )
     loop.run_forever()

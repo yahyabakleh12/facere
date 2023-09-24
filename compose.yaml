@@ -1,0 +1,15 @@
+version: "3.9"
+
+services:
+  app:
+    build: .
+    working_dir: /app
+    stdin_open: true
+    tty: true
+    command: python face-recognition-server.py #<== this overrides the Dockerfile CMD instruction
+    ports:
+      - "8765:8765"
+    volumes:
+      - type: bind
+        source: .
+        target: /app
