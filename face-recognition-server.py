@@ -12,36 +12,37 @@ userList = []
 encodListknown = []
 userPath=[]
 userid = []
-x = requests.get('https://1861-94-200-29-94.ngrok-free.app/get_faces')
-x.raise_for_status()
-# access JSOn content
-jsonResponse = x.json()
-# y = json.loads(x)
-emptyjson= {}
-json_object = json.dumps(emptyjson)
-# Writing to XXXXX.json
-with open("DB/employee.json", "w") as outfile:
-    outfile.write(json_object)
-json_object = json.dumps(jsonResponse)
-# Writing to XXXXX.json
-with open("DB/employee.json", "w") as outfile:
-    outfile.write(json_object)
-with open('DB/employee.json', 'r') as openfile:
-    # Reading from json file
-    jsonResponse = json.load(openfile)
-for user in jsonResponse:
-    if user[3] == None:
-        pass
-    else:
-        face_data = ''
-        face_data = pickle.loads(codecs.decode(
-            user[3].encode(), "base64"))
-        face_data = pickle.loads(face_data)
-        encodListknown.append(face_data)
-        userList.append(user[1])
-        userPath.append(user[4])
-        userid.append(user[0])
-
+def sync():
+    x = requests.get('https://1861-94-200-29-94.ngrok-free.app/get_faces')
+    x.raise_for_status()
+    # access JSOn content
+    jsonResponse = x.json()
+    # y = json.loads(x)
+    emptyjson= {}
+    json_object = json.dumps(emptyjson)
+    # Writing to XXXXX.json
+    with open("DB/employee.json", "w") as outfile:
+        outfile.write(json_object)
+    json_object = json.dumps(jsonResponse)
+    # Writing to XXXXX.json
+    with open("DB/employee.json", "w") as outfile:
+        outfile.write(json_object)
+    with open('DB/employee.json', 'r') as openfile:
+        # Reading from json file
+        jsonResponse = json.load(openfile)
+    for user in jsonResponse:
+        if user[3] == None:
+            pass
+        else:
+            face_data = ''
+            face_data = pickle.loads(codecs.decode(
+                user[3].encode(), "base64"))
+            face_data = pickle.loads(face_data)
+            encodListknown.append(face_data)
+            userList.append(user[1])
+            userPath.append(user[4])
+            userid.append(user[0])
+sync()
 #######################################my code###########################################################
 
 # picture_of_me = face_recognition.load_image_file("me.jpeg")
@@ -49,9 +50,11 @@ for user in jsonResponse:
 
 async def websocket_handler(websocket, path):
     try:
+        sync()
         async for message in websocket:
             response = recognize_face(message)
             await websocket.send(json.dumps(response))
+            
     except Exception as e:
         print(f"WebSocket Error: {str(e)}")
 
